@@ -42,7 +42,7 @@ pip install yt_dlp Pillow customtkinter CTkMessagebox
 
 ## Installation - FFMPEG
 To install `FFMPEG`, please follow these steps:
-1. Download the `FFMPEG` binarys from the official website [ffmpeg.org](https://ffmpeg.org/download.html) or use this [shortcut](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z))
+1. Download the `FFMPEG` binarys from the official website [ffmpeg.org](https://ffmpeg.org/download.html) or use this [shortcut](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z)
 2. Extract the downloaded archive into the folder where your program is located. The structure should look like this:
 
     ```
