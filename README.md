@@ -1,72 +1,138 @@
-# 8K YouTube Downloader - Version 7.0
+# 8K Video Downloader - Version 8.0
 
 ## About the Project
 
-The 8K YouTube Downloader is a handy tool for downloading YouTube videos in various resolutions, including up to 8K. This version offers a complete overhaul of the code and the addition of new features, such as automatic thumbnail embedding in MP3 and MP4 files.
+The 8K Video Downloader is a powerful tool for downloading video and audio files from various platforms in different resolutions, including up to 8K. This version offers a complete overhaul of the code and the addition of new features. Note that this program currently only works on Windows.
 
 ## Features
 
-- Download videos in up to 8K resolution
-- Playlist download support
-- Support for MP3 and MP4 downloads
-- Modern user interface with CustomTkinter (CTk)
-- Advanced error handling and logging
+- **Supported Platforms**: YouTube, Twitch, SoundCloud & Podcast.de
+- **Resolutions**: Download videos in up to 8K resolution
+- **Thumbnails**: Download and add thumbnails
+- **Subtitles**: Download and add subtitles
+- **Formats**: Support for MP3 and MP4 downloads
+- **Playlist Downloads**: Support for playlist downloads
+- **User Interface**: Modern GUI with CustomTkinter
+- **Advanced Options**: Accessible via the `CTRL + O` keyboard shortcut
 
 ## Requirements
 
-- Python 3.8 or higher
-- FFMPEG
-- `yt_dlp`: A library for downloading videos and playlists from YouTube.
-- `Pillow`: An image processing library used as a successor to PIL (Python Imaging Library).
-- `customtkinter`: An enhanced version of Tkinter that offers improved and more modern UI components.
-- `CTkMessagebox`: An enhanced MessageBox widget that uses CustomTkinter.
+- `Python 3.8 or higher` (tested with Python 3.12)
+- `FFmpeg`
+- `yt_dlp`
+- `Pillow`
+- `customtkinter`
+- `CTkMessagebox`
+- `beautifulsoup4`
+- `requests`
+- `vlc`
 
-Additionally, several standard Python libraries are used which are provided with the Python installation and do not require separate installation:
+Additionally, several Python standard libraries are used, which do not require separate installation:
 
-- `winreg` (only available on Windows systems)
+- `winreg`
 - `os`
-- `concurrent.futures`
 - `subprocess`
 - `re`
 - `logging`
 - `time`
 - `tkinter`
+- `sys`
+- `typing`
+- `datetime`
+- `asyncio`
+- `collections`
+- `json`
 
-## Installing Dependencies
+## Setting up the Environment
 
-To install the required Python packages, use the following command:
-
-```bash
-pip install yt_dlp Pillow customtkinter CTkMessagebox
-```
-
-## Installation - FFMPEG
-To install `FFMPEG`, please follow these steps:
-1. Download the `FFMPEG` binarys from the official website [ffmpeg.org](https://ffmpeg.org/download.html) or use this [shortcut](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z)
-2. Extract the downloaded archive into the folder where your program is located. The structure should look like this:
-
+1. **Check Python Version**:
+    ```bash
+    python --version
     ```
-    8K_YouTube_Downloader/
+    If the version is not `Python 3.8` or higher, download and install the latest version of Python [here](https://www.python.org/downloads/). Ensure that Python is added to the PATH.
+
+2. **Install Required Packages**:
+    ```bash
+    pip install yt_dlp Pillow customtkinter CTkMessagebox beautifulsoup4 requests python-vlc
+    ```
+
+3. **Download Directory from GitHub**:
+    Click on [this link](https://download-directory.github.io/?url=https://github.com/Lukasxlama/8K-YouTube-Downloader/tree/main/Version%208.0) to download the directory and extract it to any folder.
+
+4. **Install FFmpeg**:
+    Go to the following [section](#installation---ffmpeg) for detailed instructions on installing FFmpeg.
+
+5. <a id="step-5"></a> **Run the Program**:
+    Navigate to the directory where the `__main__.py` file is located and execute the following command:
+    ```bash
+    python .\__main__.py
+    ```
+    If everything works, you can take a look at the [supported formats](#supported-formats).
+    If no GUI appears, check the logs in the `\logs` directory for error messages.
+
+## Installation - FFmpeg
+
+1. **Download FFmpeg Binaries**:
+    Download the `FFmpeg` binaries from the official website [ffmpeg.org](https://ffmpeg.org/download.html) or use [this shortcut](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z).
+
+2. **Create Directory Structure**:
+    Extract the downloaded archive into the program directory. The structure should look like this:
+    ```
+    8K_Video_Downloader/
     ├── ffmpeg/
     │   └── bin/
     │       ├── ffmpeg.exe
     │       └── ffprobe.exe
     │       ...
-    │
+    ├── logs/
+    │   └── ...
+    ├── media/
+    │   └── ...
+    ├── themes/
+    │   └── ...
     ├── __main__.py
-    ├── Dependencies.py
-    ├── DownloadVideo.py
-    ├── ExtractVideoID.py
-    ├── LoggerConfig.py
-    ├── MessageBoxes.py
-    │   ...
+    ├── DependenciesManager.py
+    ├── DownloadManager.py
+    ├── downloads.json
+    ├── GUIManager.py
+    ├── JSONManager.py
+    ├── LinkManager.py
+    ├── LoggingManager.py
+    ├── MessageBoxManager.py
+    ├── OutputStreamHandler.py
+    ├── PostprocessorManager.py
     ```
 
-    The path `{path.dirname(path.abspath(__file__))}\ffmpeg\bin` is crucial for the program's functionality. If FFMPEG is not found in this directory, the program will terminate with a log.critical error message.
+Now you can proceed with [Step 5](#step-5).
 
-3. Ensure that you adjust the path specifications in `DownloadVideo.py` if you wish to use a different structure. The program expects the `ffmpeg.exe` and `ffprobe.exe` files to be in the specified `ffmpeg\bin` directory.
+## Supported Formats
+
+| Platform       | Type                  | MP3  | MP4  | Subtitles | Thumbnail |
+|----------------|-----------------------|------|------|-----------|-----------|
+| **YouTube**    | Video                 | ✅   | ✅   | ✅        | ✅        |
+| **YouTube**    | Playlist              | ✅   | ✅   | ✅        | ✅        |
+| **YouTube**    | Shorts                | ✅   | ✅   | ✅        | ✅        |
+| **YouTube**    | Shorts Shortlink      | ✅   | ✅   | ✅        | ✅        |
+| **YouTube**    | Video Shortlink       | ✅   | ✅   | ✅        | ✅        |
+| **YouTube**    | User                  | ✅   | ✅   | ✅        | ✅        |
+| **YouTube**    | Channel               | ✅   | ✅   | ✅        | ✅        |
+| **YouTube**    | Embedded              | ✅   | ✅   | ✅        | ✅        |
+| **Twitch**     | VOD                   | ✅   | ✅   | ❌        | ✅        |
+| **Twitch**     | Clip                  | ✅   | ✅   | ❌        | ✅        |
+| **SoundCloud** | Track                 | ✅   | ❌   | ❌        | ✅        |
+| **SoundCloud** | Playlist              | ✅   | ❌   | ❌        | ✅        |
+| **Podcast.de** | Episode               | ✅   | ❌   | ❌        | ✅        |
+| **Podcast.de** | Podcast               | ✅   | ❌   | ❌        | ✅        |
 
 ## Official Websites and Documentation
-- `yt_dlp`: [GitHub Repository of yt-dlp](https://github.com/yt-dlp/yt-dlp)
-- `CustomTkinter`: [GitHub Repository of CustomTkinter](https://github.com/TomSchimansky/CustomTkinter)
-- `CTkMessageBox`: [GitHub Repository of CTkMessageBox](https://github.com/Akascape/CTkMessagebox)
+
+Here are the links to the tools used in this project:
+
+- `FFmpeg`: [Website](https://ffmpeg.org/)
+- `yt_dlp`: [GitHub Repository](https://github.com/yt-dlp/yt-dlp)
+- `CustomTkinter`: [GitHub Repository](https://github.com/TomSchimansky/CustomTkinter)
+- `CTkMessageBox`: [GitHub Repository](https://github.com/Akascape/CTkMessagebox)
+- `BeautifulSoup4`: [GitHub Repository](https://github.com/wention/BeautifulSoup4)
+- `Pillow`: [GitHub Repository](https://github.com/python-pillow/Pillow)
+- `requests`: [GitHub Repository](https://github.com/psf/requests)
+- `vlc`: [GitHub Repository](https://github.com/oaubert/python-vlc/tree/master)
