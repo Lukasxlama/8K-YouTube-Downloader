@@ -305,7 +305,7 @@ class YouTubePostprocessorManager(PostprocessorManagerBase):
 
         new_path: str = MEDIA_PATH if MEDIA_PATH.endswith(f'.{self.options.get("FORMAT")}') else (
             path.join(self.options.get('PATH'), path.splitext(path.basename(MEDIA_PATH))[0] +
-                      f'.{self.options.get('FORMAT')}'))
+                      f'.{self.options.get("FORMAT")}'))
         new_path = new_path.replace('.8kdownload', '')
         png_thumb: Optional[str] = None
 
@@ -337,9 +337,10 @@ class YouTubePostprocessorManager(PostprocessorManagerBase):
             cmd.extend(['-map', '0:a'])
 
             if png_thumb:
-                cmd.extend(['-map', '1', '-c:a', 'libmp3lame', '-b:a', f'{self.options.get("QUAL",
-                            (320, (320, 4320)))[1][0]}k', '-id3v2_version', '3', '-metadata:s:v',
-                            'title="Album cover"', '-metadata:s:v', 'comment="Cover (front)"'])
+                cmd.extend(['-map', '1', '-c:a', 'libmp3lame', '-b:a',
+                            f'{self.options.get("QUAL", (320, (320, 4320)))[1][0]}k',
+                            '-id3v2_version', '3', '-metadata:s:v', 'title="Album cover"',
+                            '-metadata:s:v', 'comment="Cover (front)"'])
 
             else:
                 cmd.extend(['-c:a', 'libmp3lame', '-b:a', f'{self.options.get("QUAL", (320, (320, 4320)))[1][0]}k',
@@ -424,9 +425,9 @@ class TwitchPostprocessorManager(PostprocessorManagerBase):
             return
 
         new_path: str = path.join(self.options.get('PATH'), path.splitext(path.basename(MEDIA_PATH))[0] +
-                                  f'.converted.{self.options.get('FORMAT')}')
+                                  f'.converted.{self.options.get("FORMAT")}')
         final_path: str = path.join(self.options.get('PATH'), path.splitext(path.basename(MEDIA_PATH))[0] +
-                                    f'.{self.options.get('FORMAT')}')
+                                    f'.{self.options.get("FORMAT")}')
         png_thumb: Optional[str] = None
 
         if THUMB:
