@@ -14,6 +14,7 @@ The 8K Video Downloader is a powerful tool for downloading video and audio files
 - **Playlist Downloads**: Support for playlist downloads
 - **User Interface**: Modern GUI with CustomTkinter
 - **Advanced Options**: Accessible via the `CTRL + O` keyboard shortcut
+- **Multiple Downloads**: As many downloads as desired via JSON file
 
 ## Requirements
 
