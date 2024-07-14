@@ -310,7 +310,7 @@ class DownloadManager:
         # add other platforms here!
 
         else:
-            raise ValueError(f"Unsupported platform: {self.downloadOptions.get("LINK_PLATFORM")}")
+            raise ValueError(f"Unsupported platform: {self.downloadOptions.get('LINK_PLATFORM')}")
 
         return settings
 
