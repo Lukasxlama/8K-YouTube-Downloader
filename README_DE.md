@@ -14,6 +14,7 @@ Der 8K Video Downloader ist ein leistungsfähiges Tool zum Herunterladen von Vid
 - **Playlist-Downloads**: Unterstützung von Playlist-Downloads
 - **Benutzeroberfläche**: Moderne GUI mit CustomTkinter
 - **Erweiterte Optionen**: Über die Tastenkombination `STRG + O` zugänglich
+- **Mehrere Downloads**: Beliebig viele Downloads über JSON-Datei
 
 ## Anforderungen
 
