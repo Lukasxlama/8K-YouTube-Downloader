@@ -63,7 +63,10 @@ Additionally, several Python standard libraries are used, which do not require s
 4. **Install FFmpeg**:
     Go to the following [section](#installation---ffmpeg) for detailed instructions on installing FFmpeg.
 
-5. <a id="step-5"></a> **Run the Program**:
+5. **Install VLC Media Player**:
+    Download and install the VLC Media Player from the official [VLC website](https://www.videolan.org/vlc/index.html).
+
+7. <a id="step-6"></a> **Run the Program**:
     Navigate to the directory where the `__main__.py` file is located and execute the following command:
     ```bash
     python .\__main__.py
@@ -104,7 +107,7 @@ Additionally, several Python standard libraries are used, which do not require s
     ├── PostprocessorManager.py
     ```
 
-Now you can proceed with [Step 5](#step-5).
+Now you can proceed with [Step 6](#step-6).
 
 ## Supported Formats
 
