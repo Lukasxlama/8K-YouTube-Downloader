@@ -63,7 +63,10 @@ Zusätzlich werden mehrere Python-Standardbibliotheken verwendet, die keine geso
 4. **FFmpeg installieren**:
     Gehe zu folgendem [Abschnitt](#installation---ffmpeg) für detaillierte Anweisungen zur Installation von FFmpeg.
 
-5. <a id="schritt-5"></a> **Programm starten**:
+5. **VLC Media Player installieren**:
+    Lade den VLC Media Player von der offiziellen [VLC Webseite](https://www.videolan.org/vlc/index.html) herunter und installiere ihn.
+
+6. <a id="schritt-6"></a> **Programm starten**:
     Navigiere zu dem Verzeichnis, in dem sich die `__main__.py`-Datei befindet, und führe folgenden Befehl aus:
     ```bash
     python .\__main__.py
@@ -104,7 +107,7 @@ Zusätzlich werden mehrere Python-Standardbibliotheken verwendet, die keine geso
     ├── PostprocessorManager.py
     ```
 
-Nun kannst du mit [Schritt 5](#schritt-5) fortfahren.
+Nun kannst du mit [Schritt 6](#schritt-6) fortfahren.
 
 ## Unterstützte Formate
 
