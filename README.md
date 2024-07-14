@@ -20,6 +20,7 @@ The 8K Video Downloader is a powerful tool for downloading video and audio files
 
 - `Python 3.8 or higher` (tested with Python 3.12)
 - `FFmpeg`
+- `VLC Media Player`
 - `yt_dlp`
 - `Pillow`
 - `customtkinter`
