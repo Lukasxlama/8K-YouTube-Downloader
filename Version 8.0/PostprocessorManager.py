@@ -267,27 +267,26 @@ class YouTubePostprocessorManager(PostprocessorManagerBase):
         if not await to_thread(path.isdir, self.options.get('PATH')):
             raise ValueError("The specified PATH is not a valid directory.")
 
-        files: defaultdict[str, Dict[str, Optional[Union[str, List[str]]]]] = defaultdict(lambda: {'media': None,
-                                                                                                   'thumbnail': None,
-                                                                                                   'subtitles': []})
+        files: defaultdict[str, Dict[str, Optional[Union[str, List[str]]]]] = defaultdict(lambda: {
+            'media': None, 'thumbnail': None, 'subtitles': []})
 
         for file in await to_thread(listdir, self.options.get('PATH')):
             full_path: str = path.join(self.options.get('PATH'), file)
 
-            if (file.endswith(".8kdownload.webm") or file.endswith(".8kdownload.mp4") or
-                    file.endswith(".8kdownload.m4a")):
-                title: str = file.replace('.8kdownload.webm', '').replace('.8kdownload.mp4', '').replace('.8kdownload.m4a', '')
+            if any(file.endswith(ext) for ext in [".8kdownload.webm", ".8kdownload.mp4", ".8kdownload.m4a",
+                                                  ".8kdownload.mp3"]):
+                title: str = sub(r'\.8kdownload\.(webm|mp4|m4a|mp3)$', '', file)
                 files[title]['media'] = full_path
 
-            elif file.endswith(".8kdownload.webp"):
-                title: str = file.replace('.8kdownload.webp', '')
+            elif any(file.endswith(ext) for ext in [".8kdownload.webp", ".8kdownload.jpg", ".8kdownload.jpeg",
+                                                    ".8kdownload.png"]):
+                title: str = sub(r'\.8kdownload\.(webp|jpg|jpeg|png)$', '', file)
                 files[title]['thumbnail'] = full_path
 
             elif search(r"\.8kdownload\.[A-Za-z0-9-]+\.vtt$", file):
-                base_title: str = sub(r'\.8kdownload\.[A-Za-z0-9-]+\.vtt$', '', file)
-                files[base_title]['subtitles'].append(full_path)
+                files[sub(r'\.8kdownload\.[A-Za-z0-9-]+\.vtt$', '', file)]['subtitles'].append(full_path)
 
-        return dict(files)
+        return {key: value for key, value in files.items() if value['media']}
 
     def getProcessFileArgs(self, PATHS):
         return PATHS.get('media', ''), PATHS.get('subtitles', []), PATHS.get('thumbnail', '')
@@ -305,7 +304,7 @@ class YouTubePostprocessorManager(PostprocessorManagerBase):
 
         new_path: str = MEDIA_PATH if MEDIA_PATH.endswith(f'.{self.options.get("FORMAT")}') else (
             path.join(self.options.get('PATH'), path.splitext(path.basename(MEDIA_PATH))[0] +
-                      f'.{self.options.get("FORMAT")}'))
+                      f'.{self.options.get('FORMAT')}'))
         new_path = new_path.replace('.8kdownload', '')
         png_thumb: Optional[str] = None
 
@@ -337,10 +336,9 @@ class YouTubePostprocessorManager(PostprocessorManagerBase):
             cmd.extend(['-map', '0:a'])
 
             if png_thumb:
-                cmd.extend(['-map', '1', '-c:a', 'libmp3lame', '-b:a',
-                            f'{self.options.get("QUAL", (320, (320, 4320)))[1][0]}k',
-                            '-id3v2_version', '3', '-metadata:s:v', 'title="Album cover"',
-                            '-metadata:s:v', 'comment="Cover (front)"'])
+                cmd.extend(['-map', '1', '-c:a', 'libmp3lame', '-b:a', f'{self.options.get("QUAL",
+                            (320, (320, 4320)))[1][0]}k', '-id3v2_version', '3', '-metadata:s:v',
+                            'title="Album cover"', '-metadata:s:v', 'comment="Cover (front)"'])
 
             else:
                 cmd.extend(['-c:a', 'libmp3lame', '-b:a', f'{self.options.get("QUAL", (320, (320, 4320)))[1][0]}k',
@@ -372,11 +370,21 @@ class YouTubePostprocessorManager(PostprocessorManagerBase):
     async def processFiles(self):
         await super().processFiles()
 
-        if self.options.get('LINK_TYPE') in ['playlist', 'user'] and self.options.get('THUMBNAIL', False):
-            for filename in listdir(self.options.get('PATH')):
-                if search(r'\.8kdownload\.jpg$', filename):
-                    remove(path.join(self.options.get('PATH'), filename))
+        if not self.options.get('THUMBNAIL') and not self.options.get('LINK_TYPE') in ['playlist', 'user']:
+            return
+
+        playlistUsername: str = self.options.get('PLAYLIST_USER_NAME', None)
+
+        if playlistUsername:
+            for file in listdir(self.options.get('PATH')):
+                if file.startswith(playlistUsername) and file.endswith(('.jpg', '.png', '.webp')):
+                    remove(path.join(self.options.get('PATH'), file))
+                    log.info(f"[PostprocessorManager.py@processFile] Removed playlist thumbnail: {file}")
                     break
+
+        else:
+            log.info("[PostprocessorManager.py@processFile] The playlist/username from the DownloadManager is missing, "
+                     "skip deleting the thumbnail")
 
 class TwitchPostprocessorManager(PostprocessorManagerBase):
     """
@@ -425,9 +433,9 @@ class TwitchPostprocessorManager(PostprocessorManagerBase):
             return
 
         new_path: str = path.join(self.options.get('PATH'), path.splitext(path.basename(MEDIA_PATH))[0] +
-                                  f'.converted.{self.options.get("FORMAT")}')
+                                  f'.converted.{self.options.get('FORMAT')}')
         final_path: str = path.join(self.options.get('PATH'), path.splitext(path.basename(MEDIA_PATH))[0] +
-                                    f'.{self.options.get("FORMAT")}')
+                                    f'.{self.options.get('FORMAT')}')
         png_thumb: Optional[str] = None
 
         if THUMB:

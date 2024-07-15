@@ -180,6 +180,19 @@ class DownloadManager:
 
         return self._downloadProgress
 
+    @staticmethod
+    def getPlaylistOrUserName(URL: str) -> str:
+        """
+        Extracts the playlist/username from the given URL.
+
+        :param URL: Path of the playlist/user.
+        :return: Playlist/User name.
+        """
+
+        with YoutubeDL({'quiet': True, 'extract_flat': True}) as ydl:
+            infoDict: Dict[Any] = ydl.extract_info(URL, download=False)
+            return infoDict.get('title')
+
     async def validateOptions(self, OPT_DICT: Dict[str, Any]) -> Dict[str, Any]:
         """
         Validates and sanitizes the input options.
@@ -187,7 +200,9 @@ class DownloadManager:
         :param OPT_DICT: Dictionary of input options.
         :return: Dictionary of validated and sanitized options.
         """
-        defaults: Dict[str, None] = {
+
+        defaults: Dict[str, None] = \
+        {
             'URL': None,
             'PATH': None,
             'FLAG': None,
@@ -310,7 +325,7 @@ class DownloadManager:
         # add other platforms here!
 
         else:
-            raise ValueError(f"Unsupported platform: {self.downloadOptions.get('LINK_PLATFORM')}")
+            raise ValueError(f"Unsupported platform: {self.downloadOptions.get("LINK_PLATFORM")}")
 
         return settings
 
@@ -346,6 +361,13 @@ class DownloadManager:
 
             self.downloadOptions.update(**mediaInfo)
             log.debug(f"[DownloadManager.py@downloadVideo] Options: {self.downloadOptions}")
+
+            if (self.downloadOptions.get('LINK_PLATFORM') == 'youtube' and self.downloadOptions.get('LINK_TYPE')
+                in ['playlist', 'user'] and self.downloadOptions.get('THUMBNAIL')):
+                self.downloadOptions.update({"PLAYLIST_USER_NAME": self.getPlaylistOrUserName(
+                    self.downloadOptions.get('LINK_URL'))})
+                log.info(f"[DownloadManager.py@downloadVideo] YouTube-Playlist/User detected, extracted name: "
+                         f"{self.downloadOptions.get('PLAYLIST_NAME')}")
 
             try:
                 ytdlpOptions: Dict[str, Any] = \
